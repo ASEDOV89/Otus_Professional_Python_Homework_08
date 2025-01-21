@@ -6,3 +6,4 @@ urlpatterns = [
     path("post/new/", PostCreateView.as_view(), name="post_create"),
     path("post/<int:pk>/", PostDetailView.as_view(), name="post_detail"),
 ]
+

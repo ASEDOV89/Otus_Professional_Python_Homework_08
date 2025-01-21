@@ -106,3 +106,4 @@ class TemplateContentTest(TestCase):
         response = self.client.get(reverse("post_detail", kwargs={"pk": self.post.pk}))
         self.assertContains(response, "Test Post")
         self.assertContains(response, "Test Content")
+
