@@ -22,14 +22,14 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class PostListView(ListView):
     model = Post
-    template_name = 'blog/home.html'  # По умолчанию 'blog/post_list.html'
-    context_object_name = 'posts'
-    ordering = ['-created_at']
+    template_name = "blog/home.html"  # По умолчанию 'blog/post_list.html'
+    context_object_name = "posts"
+    ordering = ["-created_at"]
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    template_name = 'blog/post_form.html'
+    template_name = "blog/post_form.html"
     form_class = PostForm
 
     def form_valid(self, form):
@@ -37,10 +37,10 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('post_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy("post_detail", kwargs={"pk": self.object.pk})
 
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'blog/post_detail.html'
-    context_object_name = 'post'
+    template_name = "blog/post_detail.html"
+    context_object_name = "post"
