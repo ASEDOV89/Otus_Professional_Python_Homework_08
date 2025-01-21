@@ -1,14 +1,11 @@
-from rest_framework import viewsets
-from .serializers import PostSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from .models import Post
-from .forms import PostForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .models import Post
+from .forms import PostForm
+from .serializers import PostSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
