@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.conf import settings
 from .models import Post
 from .forms import PostForm
-from django.urls import reverse
+
 
 
 class PostModelTest(TestCase):
@@ -56,9 +58,10 @@ class PostViewTest(TestCase):
         self.assertTemplateUsed(response, "blog/post_detail.html")
 
     def test_post_create_view_redirect_if_not_logged_in(self):
-        response = self.client.get(reverse("post_create"))
+        response = self.client.get(reverse('post_create'))
         self.assertRedirects(
-            response, f"{reverse('login')}?next={reverse('post_create')}"
+            response,
+            f"{settings.LOGIN_URL}?next={reverse('post_create')}"
         )
 
     def test_post_create_view_logged_in(self):
@@ -77,16 +80,24 @@ class PostViewTest(TestCase):
 
 
 class URLsTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.post = Post.objects.create(
+            title='Test Post',
+            content='Test Content',
+            author=self.user
+        )
+
     def test_home_url_resolves(self):
-        response = self.client.get("/")
+        response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
 
     def test_post_detail_url_resolves(self):
-        response = self.client.get(f"/post/{self.post.pk}/")
+        response = self.client.get(f'/post/{self.post.pk}/')
         self.assertEqual(response.status_code, 200)
 
     def test_invalid_post_detail(self):
-        response = self.client.get("/post/999/")
+        response = self.client.get('/post/999/')
         self.assertEqual(response.status_code, 404)
 
 
@@ -106,4 +117,3 @@ class TemplateContentTest(TestCase):
         response = self.client.get(reverse("post_detail", kwargs={"pk": self.post.pk}))
         self.assertContains(response, "Test Post")
         self.assertContains(response, "Test Content")
-
